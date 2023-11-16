@@ -130,7 +130,7 @@ const calcPrice = computed(
 
       <h1 class="font-sans text-4xl font-bold mb-5">3D Printing Price Calculator</h1>
 
-      <div class="card w-96 bg-neutral shadow-xl shadow-base-300">
+      <div class="card w-72 md:w-96 bg-neutral shadow-xl shadow-base-300">
         <div class="card-body">
           <h2 class="card-title">Basic Data</h2>
           <div class="form-control w-full max-w-xs">
@@ -159,7 +159,7 @@ const calcPrice = computed(
       </div>
 
 
-      <div class="card w-96 bg-neutral shadow-xl shadow-base-300">
+      <div class="card w-72 md:w-96 bg-neutral  shadow-xl shadow-base-300">
         <div class="card-body">
           <h2 class="card-title">Printing Time</h2>
           <div class="form-control w-full max-w-xs">
@@ -193,35 +193,11 @@ const calcPrice = computed(
         <div class="divider"></div>
       </div>
 
-      <div class="card w-96 bg-neutral shadow-xl shadow-base-300">
-        <div class="card-body">
-          <h2 class="card-title">Printing Time</h2>
-
-          <div class="form-control w-full max-w-xs">
-            <label class="label" for="printingTimeHours">
-              <span class="label-text">Hours</span>
-            </label>
-            <input id="printingTimeHours" type="number" placeholder="0" class="input input-bordered w-full max-w-xs"
-                   v-model="printingTimeHours">
-          </div>
-
-          <div class="form-control w-full max-w-xs">
-            <label class="label" for="printingTimeMinutes">
-              <span class="label-text">Minutes</span>
-            </label>
-            <input id="printingTimeMinutes" type="number" placeholder="0" class="input input-bordered w-full max-w-xs"
-                   v-model="printingTimeMinutes">
-          </div>
-
-        </div>
-      </div>
-
-
-      <div class=" flex flex-row items-center mt-5 mb-5 p-2 card w-96 bg-neutral shadow-xl shadow-base-300">
+      <div class=" flex flex-row items-center mt-5 mb-5 p-2 card w-72 md:w-96 bg-neutral shadow-xl shadow-base-300">
         <h2 class="ml-6 basis-3/4 text-left card-title">
           Price Total
         </h2>
-        <div class="badge badge-base-300 p-5 justify-self-end basis-1/4">
+        <div class="badge badge-base-300 p-5 justify-self-end basis-2/4">
          {{ calcPrice }} {{ currency }}
         </div>
       </div>
