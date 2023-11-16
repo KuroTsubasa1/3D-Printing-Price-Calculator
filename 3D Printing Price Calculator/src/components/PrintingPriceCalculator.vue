@@ -91,10 +91,10 @@ function roundTo(n, digits) {
 const calcPrice = computed(
     () => {
 
-    // printingTimeHours to minutes
-    const printingTimeTotal = printingTimeHours.value * 60 + printingTimeMinutes.value
+      // printingTimeHours to minutes
+      const printingTimeTotal = printingTimeHours.value * 60 + printingTimeMinutes.value
 
-    //price.value = printingTimeTotal * filamentUsedInGrams.value / roleWeightInGrams.value * filamentCostPerRole.value * (1 + markupFilamentCostPercentage.value / 100) + powerConsumptionInWatts.value * powerCostPerKilowattHour.value * printingTimeMinutes / 1000 + printerCost.value / investmentRecoveryTimeInYears.value / 365 / dailyPrinterUsageInHours.value * (1 + repairCostInPercentage.value / 100) + laborCostPerHour.value * laborHours.value * (1 + markupPercentage.value / 100) * (1 + vatPercentage.value / 100)
+      //price.value = printingTimeTotal * filamentUsedInGrams.value / roleWeightInGrams.value * filamentCostPerRole.value * (1 + markupFilamentCostPercentage.value / 100) + powerConsumptionInWatts.value * powerCostPerKilowattHour.value * printingTimeMinutes / 1000 + printerCost.value / investmentRecoveryTimeInYears.value / 365 / dailyPrinterUsageInHours.value * (1 + repairCostInPercentage.value / 100) + laborCostPerHour.value * laborHours.value * (1 + markupPercentage.value / 100) * (1 + vatPercentage.value / 100)
 
       // Calculate each component separately
       let filamentCost = (filamentUsedInGrams.value / roleWeightInGrams.value * filamentCostPerRole.value) * (1 + markupFilamentCostPercentage.value / 100);
@@ -109,9 +109,9 @@ const calcPrice = computed(
       console.log(laborCost)
 
 
-  // Sum up all the costs
-  // Assign the total cost to the 'price' variable
-      price.value =roundTo( ( (filamentCost + powerCost + printerCostTotal + laborCost) * (1 + markupPercentage.value / 100)),2)
+      // Sum up all the costs
+      // Assign the total cost to the 'price' variable
+      price.value = roundTo(((filamentCost + powerCost + printerCostTotal + laborCost) * (1 + markupPercentage.value / 100)), 2)
 
       console.log(price.value)
 
@@ -122,97 +122,109 @@ const calcPrice = computed(
 </script>
 
 <template>
-  <div class="">
+  <div class="flex flex-wrap justify-center">
 
 
 
-    <div class="mt-5 flex flex-col items-center">
+    <div class="flex flex-col items-center text-center mt-5 w-1/2">
 
-      <h1 class="text-3xl">3D Printing Price Calculator</h1>
+      <h1 class="font-sans text-4xl font-bold mb-5">3D Printing Price Calculator</h1>
 
-      <div class="flex-row ">
-        <label for="jobName">Job Name</label>
-        <input v-model="jobName" type="text">
+      <div class="card w-96 bg-neutral shadow-xl shadow-base-300">
+        <div class="card-body">
+          <h2 class="card-title">Basic Data</h2>
+          <div class="form-control w-full max-w-xs">
+            <label class="label" for="jobName">
+              <span class="label-text">Job Name</span>
+            </label>
+            <input id="jobName" type="text" placeholder="3D Benchy" class="input input-bordered w-full max-w-xs"
+                   v-model="jobName">
+          </div>
+
+          <div class="form-control w-full max-w-xs">
+            <label class="label">
+              <span class="label-text">Currency</span>
+            </label>
+            <select class="select select-bordered" v-model="currency">
+              <option value="€">€</option>
+              <option value="$">$</option>
+              <option value="£">£</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="flex flex-col w-full">
+        <div class="divider"></div>
       </div>
 
 
+      <div class="card w-96 bg-neutral shadow-xl shadow-base-300">
+        <div class="card-body">
+          <h2 class="card-title">Printing Time</h2>
+          <div class="form-control w-full max-w-xs">
+            <label class="label" for="printingTimeHours">
+              <span class="label-text">Hours</span>
+            </label>
+            <input id="printingTimeHours" type="number" placeholder="0" min="0" oninput="this.value = Math.abs(this.value)" class="input input-bordered w-full max-w-xs"
+                   v-model="printingTimeHours">
+          </div>
 
-      <label for="currency">Currency</label>
-      <select v-model="currency">
-        <option value="€">€</option>
-        <option value="$">$</option>
-        <option value="£">£</option>
-      </select>
+          <div class="form-control w-full max-w-xs">
+            <label class="label" for="printingTimeMinutes">
+              <span class="label-text">Minutes</span>
+            </label>
+            <input id="printingTimeMinutes" type="number" placeholder="0" min="0" oninput="this.value = Math.abs(this.value)" class="input input-bordered w-full max-w-xs"
+                   v-model="printingTimeMinutes">
+          </div>
 
-      <label for="printingTimeHours">Printing Time Hours</label>
-      <input v-model="printingTimeHours" type="number">
+          <div class="form-control w-full max-w-xs">
+            <label class="label" for="filamentUsedInGrams">
+              <span class="label-text">Filament Used In Grams</span>
+            </label>
+            <input id="printingTimeMinutes" type="number" placeholder="0" min="0" oninput="this.value = Math.abs(this.value)" class="input input-bordered w-full max-w-xs"
+                   v-model="filamentUsedInGrams">
+          </div>
 
-      <label for="printingTimeMinutes">Printing Time Minutes</label>
-      <input v-model="printingTimeMinutes" type="number">
+        </div>
+      </div>
 
-      <label for="filamentUsedInGrams">Filament Used In Grams</label>
-      <input v-model="filamentUsedInGrams" type="number">
+      <div class="flex flex-col w-full">
+        <div class="divider"></div>
+      </div>
 
-      <label for="filamentType">Filament Type</label>
-      <select v-model="filamentType">
-        <option value="PLA">PLA</option>
-        <option value="ABS">ABS</option>
-        <option value="PETG">PETG</option>
-        <option value="TPU">TPU</option>
-        <option value="Nylon">Nylon</option>
-        <option value="PC">PC</option>
-        <option value="ASA">ASA</option>
-        <option value="PP">PP</option>
-        <option value="PVA">PVA</option>
-        <option value="HIPS">HIPS</option>
-        <option value="Wood">Wood</option>
-        <option value="Metal">Metal</option>
-        <option value="Carbon Fiber">Carbon Fiber</option>
-        <option value="Glass">Glass</option>
-        <option value="Other">Other</option>
-      </select>
+      <div class="card w-96 bg-neutral shadow-xl shadow-base-300">
+        <div class="card-body">
+          <h2 class="card-title">Printing Time</h2>
 
-      <label for="filamentCostPerRole">Filament Cost Per Role</label>
-      <input v-model="filamentCostPerRole" type="number">
+          <div class="form-control w-full max-w-xs">
+            <label class="label" for="printingTimeHours">
+              <span class="label-text">Hours</span>
+            </label>
+            <input id="printingTimeHours" type="number" placeholder="0" class="input input-bordered w-full max-w-xs"
+                   v-model="printingTimeHours">
+          </div>
 
-      <label for="roleWeightInGrams">Role Weight In Grams</label>
-      <input v-model="roleWeightInGrams" type="number">
+          <div class="form-control w-full max-w-xs">
+            <label class="label" for="printingTimeMinutes">
+              <span class="label-text">Minutes</span>
+            </label>
+            <input id="printingTimeMinutes" type="number" placeholder="0" class="input input-bordered w-full max-w-xs"
+                   v-model="printingTimeMinutes">
+          </div>
 
-      <label for="markupFilamentCostPercentage">Markup Filament Cost Percentage</label>
-      <input v-model="markupFilamentCostPercentage" type="number">
+        </div>
+      </div>
 
-      <label for="powerConsumptionInWatts">Power Consumption In Watts</label>
-      <input v-model="powerConsumptionInWatts" type="number">
 
-      <label for="powerCostPerKilowattHour">Power Cost Per Kilowatt Hour</label>
-      <input v-model="powerCostPerKilowattHour" type="number">
-
-      <label for="printerCost">Printer Cost</label>
-      <input v-model="printerCost" type="number">
-
-      <label for="investmentRecoveryTimeInYears">Investment Recovery Time In Years</label>
-      <input v-model="investmentRecoveryTimeInYears" type="number">
-
-      <label for="dailyPrinterUsageInHours">Daily Printer Usage In Hours</label>
-      <input v-model="dailyPrinterUsageInHours" type="number">
-
-      <label for="repairCostInPercentage">Repair Cost In Percentage</label>
-      <input v-model="repairCostInPercentage" type="number">
-
-      <label for="laborCostPerHour">Labor Cost Per Hour</label>
-      <input v-model="laborCostPerHour" type="number">
-
-      <label for="laborHours">Labor Hours</label>
-      <input v-model="laborHours" type="number">
-
-      <label for="markupPercentage">Markup Percentage</label>
-      <input v-model="markupPercentage" type="number">
-
-      <label for="vatPercentage">Vat Percentage</label>
-      <input v-model="vatPercentage" type="number">
-
-      <p>Price: {{ calcPrice }}</p>
-
+      <div class=" flex flex-row items-center mt-5 mb-5 p-2 card w-96 bg-neutral shadow-xl shadow-base-300">
+        <h2 class="ml-6 basis-3/4 text-left card-title">
+          Price Total
+        </h2>
+        <div class="badge badge-base-300 p-5 justify-self-end basis-1/4">
+         {{ calcPrice }} {{ currency }}
+        </div>
+      </div>
     </div>
   </div>
 
