@@ -130,7 +130,7 @@ const calcPrice = computed(
 
       <h1 class="font-sans text-4xl font-bold mb-5">3D Printing Price Calculator</h1>
 
-      <div class="card w-72 md:w-96 bg-neutral shadow-xl shadow-base-300">
+      <div class="card w-72 md:w-96 bg-primary  shadow-xl shadow-base-300">
         <div class="card-body">
           <h2 class="card-title">Basic Data</h2>
           <div class="form-control w-full max-w-xs">
