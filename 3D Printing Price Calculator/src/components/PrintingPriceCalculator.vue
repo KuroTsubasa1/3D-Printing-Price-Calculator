@@ -1,6 +1,9 @@
 <script setup>
 
-import {computed, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref} from "vue";
+
+const isSticky = ref(true);
+
 
 const price = ref(0);
 const jobName = ref('');
@@ -35,42 +38,6 @@ const otherCosts = ref([]);
 const markupPercentage = ref(20);
 
 const vatPercentage = ref(0);
-
-/* what do we need
-
-  price in total
-
-  job name
-  currency
-
-  printing time hours
-  printing time minutes
-
-  filament used in grams
-
-  filament type
-  filament cost per role
-  role weight in grams
-  markup filament cost percentage
-
-  power consumption in watts
-  power cost per kilowatt hour
-
-  printer cost
-  investment recovery time in years
-
-  daily printer usage in hours
-  repair cost in percentage
-
-  labor cost per hour
-  labor hours
-
-  markup percentage
-
-  vat percentage
-
-
-*/
 
 function roundTo(n, digits) {
   return Number(n.toFixed(digits));
@@ -123,15 +90,40 @@ const removeOtherCost = (index) => {
   otherCosts.value.splice(index, 1);
 };
 
+const handleScroll = () => {
+  const totalPriceElement = document.getElementById('totalPriceElement'); // ID of your actual total price element
+  const stickyPosition = totalPriceElement.getBoundingClientRect().top + window.scrollY;
+  isSticky.value = window.scrollY + window.innerHeight < stickyPosition;
+};
+
+
+onMounted(() => {
+  window.addEventListener('scroll', handleScroll);
+});
+
+onUnmounted(() => {
+  window.removeEventListener('scroll', handleScroll);
+});
+
 </script>
 
 <template>
   <div class="flex flex-wrap justify-center">
 
-
     <div class="flex flex-col items-center text-center mt-5 w-1/2">
 
       <h1 class="font-sans text-4xl font-bold mb-5">3D Printing Price Calculator</h1>
+
+      <div :class="{'sticky-total': isSticky}" class="card mb-5 w-96 md:w-96 bg-secondary shadow-xl shadow-base-300">
+        <div class="card-body flex flex-row items-center">
+          <h2 class="ml-6 basis-3/4 text-left card-title">
+            Price Total
+          </h2>
+          <div class="badge badge-base-300 p-5 justify-self-end basis-2/4">
+            {{ calcPrice }} {{ currency }}
+          </div>
+        </div>
+      </div>
 
       <div class="card w-72 md:w-96 bg-neutral shadow-xl shadow-base-300">
         <div class="card-body">
@@ -169,7 +161,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="printingTimeHours">
               <span class="label-text">Hours</span>
             </label>
-            <input id="printingTimeHours" v-model="printingTimeHours" class="input input-bordered w-full max-w-xs" min="0"
+            <input id="printingTimeHours" v-model="printingTimeHours" class="input input-bordered w-full max-w-xs"
+                   min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -178,7 +171,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="printingTimeMinutes">
               <span class="label-text">Minutes</span>
             </label>
-            <input id="printingTimeMinutes" v-model="printingTimeMinutes" class="input input-bordered w-full max-w-xs" min="0"
+            <input id="printingTimeMinutes" v-model="printingTimeMinutes" class="input input-bordered w-full max-w-xs"
+                   min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -187,7 +181,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="filamentUsedInGrams">
               <span class="label-text">Filament Used In Grams</span>
             </label>
-            <input id="printingTimeMinutes" v-model="filamentUsedInGrams" class="input input-bordered w-full max-w-xs" min="0"
+            <input id="printingTimeMinutes" v-model="filamentUsedInGrams" class="input input-bordered w-full max-w-xs"
+                   min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -222,7 +217,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="costPerRoll">
               <span class="label-text">Filament Cost Per Roll</span>
             </label>
-            <input id="costPerRoll" v-model="filamentCostPerRole" class="input input-bordered w-full max-w-xs" min="0" oninput="this.value = Math.abs(this.value)"
+            <input id="costPerRoll" v-model="filamentCostPerRole" class="input input-bordered w-full max-w-xs" min="0"
+                   oninput="this.value = Math.abs(this.value)"
                    placeholder="0"
                    type="number">
           </div>
@@ -233,7 +229,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="roleWeightInGrams">
               <span class="label-text">Role Weight In Grams</span>
             </label>
-            <input id="roleWeightInGrams" v-model="roleWeightInGrams" class="input input-bordered w-full max-w-xs" min="0"
+            <input id="roleWeightInGrams" v-model="roleWeightInGrams" class="input input-bordered w-full max-w-xs"
+                   min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -244,7 +241,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="markupFilamentCostPercentage">
               <span class="label-text">Markup Filament Cost Percentage</span>
             </label>
-            <input id="markupFilamentCostPercentage" v-model="markupFilamentCostPercentage" class="input input-bordered w-full max-w-xs" max="100" min="0"
+            <input id="markupFilamentCostPercentage" v-model="markupFilamentCostPercentage"
+                   class="input input-bordered w-full max-w-xs" max="100" min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -268,7 +266,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="powerConsumptionInWatts">
               <span class="label-text">Power Consumption in Watts</span>
             </label>
-            <input id="powerConsumptionInWatts" v-model="powerConsumptionInWatts" class="input input-bordered w-full max-w-xs" min="0"
+            <input id="powerConsumptionInWatts" v-model="powerConsumptionInWatts"
+                   class="input input-bordered w-full max-w-xs" min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -279,7 +278,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="powerCostPerKilowattHour">
               <span class="label-text">Power Cost Per Kilowatt Hour</span>
             </label>
-            <input id="powerCostPerKilowattHour" v-model.number="powerCostPerKilowattHour" class="input input-bordered w-full max-w-xs" min="0" placeholder="0.00"
+            <input id="powerCostPerKilowattHour" v-model.number="powerCostPerKilowattHour"
+                   class="input input-bordered w-full max-w-xs" min="0" placeholder="0.00"
                    step="0.01"
                    type="number">
           </div>
@@ -301,7 +301,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="printerCost">
               <span class="label-text">Printer Cost</span>
             </label>
-            <input id="printerCost" v-model="printerCost" class="input input-bordered w-full max-w-xs" min="0" oninput="this.value = Math.abs(this.value)"
+            <input id="printerCost" v-model="printerCost" class="input input-bordered w-full max-w-xs" min="0"
+                   oninput="this.value = Math.abs(this.value)"
                    placeholder="0"
                    type="number">
           </div>
@@ -312,7 +313,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="investmentRecoveryTimeInYears">
               <span class="label-text">Investment Recovery Time in Years</span>
             </label>
-            <input id="investmentRecoveryTimeInYears" v-model="investmentRecoveryTimeInYears" class="input input-bordered w-full max-w-xs" min="0"
+            <input id="investmentRecoveryTimeInYears" v-model="investmentRecoveryTimeInYears"
+                   class="input input-bordered w-full max-w-xs" min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -323,7 +325,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="dailyPrinterUsageInHours">
               <span class="label-text">Daily Printer Usage in Hours</span>
             </label>
-            <input id="dailyPrinterUsageInHours" v-model="dailyPrinterUsageInHours" class="input input-bordered w-full max-w-xs" max="24" min="0"
+            <input id="dailyPrinterUsageInHours" v-model="dailyPrinterUsageInHours"
+                   class="input input-bordered w-full max-w-xs" max="24" min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -334,7 +337,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="repairCostInPercentage">
               <span class="label-text">Repair Cost in Percentage</span>
             </label>
-            <input id="repairCostInPercentage" v-model="repairCostInPercentage" class="input input-bordered w-full max-w-xs" max="100" min="0"
+            <input id="repairCostInPercentage" v-model="repairCostInPercentage"
+                   class="input input-bordered w-full max-w-xs" max="100" min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -369,7 +373,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="laborHours">
               <span class="label-text">Labor Hours</span>
             </label>
-            <input id="laborHours" v-model="laborHours" class="input input-bordered w-full max-w-xs" min="0" oninput="this.value = Math.abs(this.value)"
+            <input id="laborHours" v-model="laborHours" class="input input-bordered w-full max-w-xs" min="0"
+                   oninput="this.value = Math.abs(this.value)"
                    placeholder="0"
                    type="number">
           </div>
@@ -397,7 +402,8 @@ const removeOtherCost = (index) => {
             <label :for="'otherCostAmount-' + index" class="label">
               <span class="label-text">Cost Amount</span>
             </label>
-            <input :id="'otherCostAmount-' + index" v-model="cost.amount" class="input input-bordered w-full max-w-xs" min="0"
+            <input :id="'otherCostAmount-' + index" v-model="cost.amount" class="input input-bordered w-full max-w-xs"
+                   min="0"
                    placeholder="0" type="number">
 
             <button class="btn btn-sm btn-error mt-3" @click="removeOtherCost(index)">Remove This Item</button>
@@ -445,7 +451,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="markupPercentage">
               <span class="label-text">Markup Percentage</span>
             </label>
-            <input id="markupPercentage" v-model="markupPercentage" class="input input-bordered w-full max-w-xs" max="100" min="0"
+            <input id="markupPercentage" v-model="markupPercentage" class="input input-bordered w-full max-w-xs"
+                   max="100" min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -456,7 +463,8 @@ const removeOtherCost = (index) => {
             <label class="label" for="vatPercentage">
               <span class="label-text">VAT Percentage</span>
             </label>
-            <input id="vatPercentage" v-model="vatPercentage" class="input input-bordered w-full max-w-xs" max="100" min="0"
+            <input id="vatPercentage" v-model="vatPercentage" class="input input-bordered w-full max-w-xs" max="100"
+                   min="0"
                    oninput="this.value = Math.abs(this.value)" placeholder="0"
                    type="number">
           </div>
@@ -464,8 +472,7 @@ const removeOtherCost = (index) => {
         </div>
       </div>
 
-
-      <div class=" mt-5 mb-5 p-2 card w-72 md:w-96 bg-neutral shadow-xl shadow-base-300">
+      <div id="totalPriceElement"  class=" mt-5 mb-5 p-2 card w-72 md:w-96 bg-secondary shadow-xl shadow-base-300">
         <div class="card-body  flex flex-row items-center">
           <h2 class="ml-6 basis-3/4 text-left card-title">
             Price Total
@@ -482,5 +489,13 @@ const removeOtherCost = (index) => {
 </template>
 
 <style scoped>
+
+.sticky-total {
+  position: fixed;
+  bottom: 0;
+  width: 50%;
+  z-index: 1000; /* ensure it's above other elements */
+}
+
 
 </style>
