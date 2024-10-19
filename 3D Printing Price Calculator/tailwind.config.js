@@ -11,12 +11,12 @@ export default {
     daisyui: {
         themes: ["light", "dark", {
             accessibleTheme: {
-                "primary": "#1a202c",
-                "secondary": "#2d3748",
-                "accent": "#4a5568",
-                "neutral": "#718096",
-                "base-100": "#f7fafc",
-                "base-200": "#edf2f7",
+                "primary": "#000000",
+                "secondary": "#3c858b",
+                "accent": "#54adb6",
+                "neutral": "#14122b",
+                "base-100": "#f3e4e2",
+                "base-200": "#e2e8f0",
                 "base-300": "#e2e8f0",
             },
         },],
