@@ -9,15 +9,15 @@ export default {
     },
     plugins: [require("daisyui")],
     daisyui: {
-        themes: ["light", "dark", "forest", {
-            HarmTheme: {
-                "primary": "#bcdf72",
-                "secondary": "#0c3619",
-                "accent": "#a3d33c",
-                "neutral": "#1f0e3f",
-                "base-100": "#120825",
-                "base-200": "#351762",
-                "base-300": "#6f2ed2",
+        themes: ["light", "dark", {
+            accessibleTheme: {
+                "primary": "#000000",
+                "secondary": "#3c858b",
+                "accent": "#54adb6",
+                "neutral": "#14122b",
+                "base-100": "#f3e4e2",
+                "base-200": "#e2e8f0",
+                "base-300": "#e2e8f0",
             },
         },],
     },
